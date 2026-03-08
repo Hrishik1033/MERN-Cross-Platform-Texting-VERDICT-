@@ -31,7 +31,7 @@ io.on('connection',(socket)=>{
     })
 })
 //Deployment code
-const dirPath = path.resolve()
+/*const dirPath = path.resolve()
 if(process.env.NODE_ENV === 'production'){
     
     app.use(express.static(path.join(dirPath, "frontend/dist")))
@@ -39,20 +39,29 @@ if(process.env.NODE_ENV === 'production'){
 app.use((req, res) => {
   res.sendFile(path.join(dirPath, "frontend", "dist", "index.html"))
 })
-}
+}*/
 // Updated for: frontend is INSIDE backend
-/*const dirPath = path.resolve();
-
+const dirPath = path.resolve();
 if (process.env.NODE_ENV === 'production') {
-    // Look directly inside the current folder for 'frontend/dist'
-    const frontendDistPath = path.join(dirPath, "frontend", "dist");
+    // 1. Define the path
+    const frontendDistPath = path.resolve(__dirname, 'frontend', 'dist');
     
+    console.log("Checking path:", frontendDistPath);
+
+    // 2. Serve static files
     app.use(express.static(frontendDistPath));
 
-    app.get("*", (req, res) => {
-        res.sendFile(path.join(frontendDistPath, "index.html"));
+    // 3. Catch-all route
+    app.get('*', (req, res) => {
+        const indexPath = path.join(frontendDistPath, 'index.html');
+        res.sendFile(indexPath, (err) => {
+            if (err) {
+                console.error("Error sending index.html:", err);
+                res.status(500).send("Frontend build not found. Ensure 'npm run build' worked.");
+            }
+        });
     });
-}*/
+}
 
 server.listen(PORT,()=>{
     console.log(`Server connected to port ${PORT}`)
