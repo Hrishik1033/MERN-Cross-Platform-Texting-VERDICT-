@@ -42,24 +42,18 @@ app.use((req, res) => {
 }*/
 // Updated for: frontend is INSIDE backend
 const dirPath = path.resolve();
-if (process.env.NODE_ENV === 'production') {
-    // 1. Define the path
-    const frontendDistPath = path.resolve(__dirname, 'frontend', 'dist');
-    
-    console.log("Checking path:", frontendDistPath);
 
-    // 2. Serve static files
+if (process.env.NODE_ENV === 'production') {
+    // This is the most reliable way to find the folder regardless of Root Dir settings
+    const frontendDistPath = path.join(__dirname, 'frontend', 'dist');
+    
+    // Log this to your Render console so you can see EXACTLY where it's looking
+    console.log("Serving static files from:", frontendDistPath);
+
     app.use(express.static(frontendDistPath));
 
-    // 3. Catch-all route
-    app.get('*', (req, res) => {
-        const indexPath = path.join(frontendDistPath, 'index.html');
-        res.sendFile(indexPath, (err) => {
-            if (err) {
-                console.error("Error sending index.html:", err);
-                res.status(500).send("Frontend build not found. Ensure 'npm run build' worked.");
-            }
-        });
+    app.get((req, res) => {
+        res.sendFile(path.join(frontendDistPath, "index.html"));
     });
 }
 
