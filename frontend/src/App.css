@@ -1,42 +1,100 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* General Reset & Background */
+body {
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+h1 {
+  color: #1a73e8;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* The Chat Container */
+.mainDiv {
+  background: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Individual Messages */
+.mainDiv p {
+  background-color: #e4e6eb;
+  padding: 10px 15px;
+  border-radius: 18px;
+  margin: 5px 0;
+  max-width: fit-content;
+  align-self: flex-start;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #050505;
+  animation: fadeIn 0.3s ease;
 }
 
-.card {
-  padding: 2em;
+/* Input Form Styling */
+form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.read-the-docs {
-  color: #888;
+input[type="text"] {
+  width: 250px;
+  padding: 12px 15px;
+  border: 2px solid #ddd;
+  border-radius: 25px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #1a73e8;
+}
+
+button {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.1s active;
+}
+
+button:hover {
+  background-color: #1557b0;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Subtle Animation for New Messages */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom Scrollbar for Chrome/Safari */
+.mainDiv::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mainDiv::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
 }
