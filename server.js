@@ -43,7 +43,6 @@ app.use((req, res) => {
 // Updated for: frontend is INSIDE backend
 const dirPath = path.resolve();
 
-if (process.env.NODE_ENV === 'production') {
     // This is the most reliable way to find the folder regardless of Root Dir settings
     const frontendDistPath = path.join(__dirname, 'frontend', 'dist');
     
@@ -55,7 +54,7 @@ if (process.env.NODE_ENV === 'production') {
     app.get((req, res) => {
         res.sendFile(path.join(frontendDistPath, "index.html"));
     });
-}
+
 
 server.listen(PORT,()=>{
     console.log(`Server connected to port ${PORT}`)
