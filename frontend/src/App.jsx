@@ -27,6 +27,8 @@ const App = () => {
 }
 
 export default App*/ 
+
+/*
 import React, { useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 import './App.css'
@@ -87,4 +89,79 @@ const App = () => {
   )
 }
 
-export default App
+export default App*/
+
+import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import ViewUsers from './pages/ViewUsers';
+import Chat from './pages/Chat';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import Topbar from './components/Topbar';
+import './App.css';
+import './styles/auth.css';
+import './styles/dashboard.css';
+
+const AuthLayout = ({ children }) => (
+  <div className="page">
+    <div className="auth-frame">
+      <div className="topbar topbar-floating">
+        <Topbar />
+      </div>
+      {children}
+    </div>
+  </div>
+);
+
+const DashboardLayout = ({ children }) => (
+  <div className="page dashboard-wrap">
+    <div className="dashboard">
+      <Sidebar />
+      <div className="main">
+        <Topbar />
+        <Header />
+        <div className="route-surface">{children}</div>
+      </div>
+    </div>
+  </div>
+);
+
+const App = () => {
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path="/login"
+          element={<AuthLayout><Login onLogin={() => setIsAuthed(true)} /></AuthLayout>}
+        />
+        <Route
+          path="/signup"
+          element={<AuthLayout><Signup /></AuthLayout>}
+        />
+        <Route
+          path="/users"
+          element={<DashboardLayout><ViewUsers /></DashboardLayout>}
+        />
+        <Route
+          path="/chat"
+          element={isAuthed
+            ? <DashboardLayout><Chat /></DashboardLayout>
+            : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/"
+          element={<DashboardLayout><Home /></DashboardLayout>}
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
+  );
+};
+
+export default App;
+
