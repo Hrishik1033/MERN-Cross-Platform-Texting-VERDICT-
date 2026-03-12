@@ -49,6 +49,8 @@ export default Signup;*/
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE = import.meta.env.VITE_API_URL || window.location.origin;
+
 const Signup = () => {
   const [form, setForm] = useState({ name: '', email: '', pass: '' });
   const [status, setStatus] = useState('');
@@ -60,7 +62,7 @@ const Signup = () => {
     e.preventDefault();
     setStatus('Creating account...');
     try {
-      const res = await fetch('http://localhost:3000/signup', {
+      const res = await fetch(`${API_BASE}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -98,4 +100,5 @@ const Signup = () => {
 };
 
 export default Signup;
+
 

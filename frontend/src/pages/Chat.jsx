@@ -2,8 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { io } from 'socket.io-client';
 import '../App.css';
 
+const API_BASE = import.meta.env.VITE_API_URL || window.location.origin;
+
 const Chat = () => {
-  const socket = useMemo(() => io(), []);
+  const socket = useMemo(() => io(API_BASE, { transports: ['websocket', 'polling'] }), []);
   const [msg, setMsg] = useState('');
   const [messages, setMessages] = useState([]);
 

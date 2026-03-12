@@ -51,6 +51,8 @@ export default Login;*/
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE = import.meta.env.VITE_API_URL || window.location.origin;
+
 const Login = ({ onLogin }) => {
   const [form, setForm] = useState({ email: '', pass: '' });
   const [status, setStatus] = useState('');
@@ -62,7 +64,7 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     setStatus('Authenticating...');
     try {
-      const res = await fetch('http://localhost:3000/login', {
+      const res = await fetch(`${API_BASE}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -110,4 +112,5 @@ const Login = ({ onLogin }) => {
 };
 
 export default Login;
+
 

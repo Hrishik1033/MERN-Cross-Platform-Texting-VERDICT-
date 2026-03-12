@@ -32,12 +32,14 @@ const ViewUsers = () => {
 export default ViewUsers;*/
 import { useEffect, useState } from 'react';
 
+const API_BASE = import.meta.env.VITE_API_URL || window.location.origin;
+
 const ViewUsers = () => {
   const [users, setUsers] = useState([]);
   const [status, setStatus] = useState('Loading users…');
 
   useEffect(() => {
-    fetch('http://localhost:3000/see')
+    fetch(`${API_BASE}/see`)
       .then((res) => res.json())
       .then((data) => {
         setUsers(data.result || []);
@@ -62,4 +64,5 @@ const ViewUsers = () => {
 };
 
 export default ViewUsers;
+
 
