@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 import '../App.css';
 
 const Chat = () => {
-  const socket = useMemo(() => io('http://localhost:3000'), []);
+  const socket = useMemo(() => io(), []);
   const [msg, setMsg] = useState('');
   const [messages, setMessages] = useState([]);
 
