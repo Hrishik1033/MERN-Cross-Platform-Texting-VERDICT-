@@ -9,17 +9,32 @@ const Chat = () => {
   const [msg, setMsg] = useState('');
   const [messages, setMessages] = useState([]);
 
+  // Accept both: string payloads ("<message> <socketId>") and object payloads { message, id }
+  const normalizeIncoming = (data) => {
+    if (typeof data === 'string') {
+      const parts = data.split(' ');
+      const maybeId = parts.pop();
+      const text = parts.join(' ').trim();
+      const type = maybeId === socket.id ? 'sent' : 'received';
+      return { text: text || '[empty message]', type };
+    }
+    const text = data?.message || '';
+    const type = data?.id === socket.id ? 'sent' : 'received';
+    return { text: text || '[empty message]', type };
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!msg.trim()) return;
-    socket.emit('send-message', msg);
+    const trimmed = msg.trim();
+    if (!trimmed) return;
+    socket.emit('send-message', trimmed);
     setMsg('');
   };
 
   useEffect(() => {
     const receive = (data) => {
-      const type = data.id === socket.id ? 'sent' : 'received';
-      setMessages((prev) => [...prev, { text: data.message, type }]);
+      const normalized = normalizeIncoming(data);
+      setMessages((prev) => [...prev, normalized]);
     };
     socket.on('receive-message', receive);
     return () => socket.off('receive-message', receive);
